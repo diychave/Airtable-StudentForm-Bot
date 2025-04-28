@@ -36,6 +36,8 @@
         };
         // отправляем данные боту
         tg.sendData(JSON.stringify(data));
+        // закрываем Web App
+        tg.close();
       });
   </script>
 </body>
