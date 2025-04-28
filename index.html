@@ -15,41 +15,25 @@
   <h1>Регистрация студента</h1>
   <form id="form">
     <input type="text" id="firstName" placeholder="Имя" required>
-    <input type="text" id="lastName"  placeholder="Фамилия" required>
-    <input type="email" id="email"     placeholder="Email" required>
+    <input type="text" id="lastName" placeholder="Фамилия" required>
+    <input type="email" id="email" placeholder="Email" required>
     <button type="submit">Отправить</button>
   </form>
 
   <script>
-    // Проверяем, что WebApp-объект есть
-    const tg = window.Telegram?.WebApp;
-    if (!tg) {
-      console.error("Telegram WebApp API не найден");
-    } else {
-      console.log("Telegram WebApp API инициализирован");
-      tg.expand();
-    }
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-    document
-      .getElementById('form')
-      .addEventListener('submit', e => {
-        e.preventDefault();
-
-        const data = {
-          firstName: document.getElementById('firstName').value,
-          lastName : document.getElementById('lastName').value,
-          email    : document.getElementById('email').value
-        };
-
-        console.log("Отправляем данные боту:", data);
-        tg.sendData(JSON.stringify(data));
-
-        // Небольшая задержка, чтобы точно отправка успела уйти
-        setTimeout(() => {
-          console.log("Вызываем tg.close()");
-          tg.close();
-        }, 200);
-      });
+    document.getElementById('form').addEventListener('submit', e => {
+      e.preventDefault();
+      const data = {
+        firstName: document.getElementById('firstName').value,
+        lastName : document.getElementById('lastName').value,
+        email    : document.getElementById('email').value
+      };
+      tg.sendData(JSON.stringify(data));
+      setTimeout(() => tg.close(), 100); // Закрытие с небольшой задержкой
+    });
   </script>
 </body>
 </html>
