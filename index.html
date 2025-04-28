@@ -12,32 +12,43 @@
   </style>
 </head>
 <body>
-  <h1>Регистрация студент-а</h1>
+  <h1>Регистрация студента</h1>
   <form id="form">
-    <input type="text" id="firstName" placeholder="Им-я" required>
+    <input type="text" id="firstName" placeholder="Имя" required>
     <input type="text" id="lastName"  placeholder="Фамилия" required>
     <input type="email" id="email"     placeholder="Email" required>
     <button type="submit">Отправить</button>
   </form>
 
   <script>
-    // Инициализируем WebApp
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    // Проверяем, что WebApp-объект есть
+    const tg = window.Telegram?.WebApp;
+    if (!tg) {
+      console.error("Telegram WebApp API не найден");
+    } else {
+      console.log("Telegram WebApp API инициализирован");
+      tg.expand();
+    }
 
     document
       .getElementById('form')
       .addEventListener('submit', e => {
         e.preventDefault();
+
         const data = {
           firstName: document.getElementById('firstName').value,
           lastName : document.getElementById('lastName').value,
           email    : document.getElementById('email').value
         };
-        // отправляем данные боту
+
+        console.log("Отправляем данные боту:", data);
         tg.sendData(JSON.stringify(data));
-        // закрываем Web App
-        tg.close();
+
+        // Небольшая задержка, чтобы точно отправка успела уйти
+        setTimeout(() => {
+          console.log("Вызываем tg.close()");
+          tg.close();
+        }, 200);
       });
   </script>
 </body>
